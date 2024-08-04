@@ -1,39 +1,75 @@
-import React, { useRef, useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
+import React, { useMemo, useRef, useEffect } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
-const Rain = ({ count }) => {
-    const meshRef = useRef();
-    const dummy = useMemo(() => new THREE.Object3D(), []);
-    const drops = useMemo(() => {
-        const temp = [];
-        for (let i = 0; i < count; i++) {
-            temp.push({
-                position: [Math.random() * 100 - 50, Math.random() * 100, Math.random() * 100 - 50],
-                speed: Math.random() * 0.02 + 0.02,
-            });
+const Rain = ({ isThunderstorm }) => {
+    const rainCount = 10000;
+    const rainGroupRef = useRef();
+    const lightningRef = useRef();
+    const { scene } = useThree();
+
+    const raindrops = useMemo(() => {
+        const drops = [];
+        for (let i = 0; i < rainCount; i++) {
+            const x = Math.random() * 200 - 100;
+            const y = Math.random() * 200 - 100;
+            const z = Math.random() * 200 - 100;
+            drops.push(
+                <mesh key={i} position={[x, y, z]}>
+                    <cylinderGeometry attach="geometry" args={[0.05, 0.05, 0.5, 32]} />
+                    <meshBasicMaterial attach="material" color={0x888888} />
+                </mesh>
+            );
         }
-        return temp;
-    }, [count]);
+        return drops;
+    }, [rainCount]);
 
     useFrame(() => {
-        drops.forEach((drop, i) => {
-            drop.position[1] -= drop.speed;
-            if (drop.position[1] < 0) {
-                drop.position[1] = 100;
-            }
-            dummy.position.set(drop.position[0], drop.position[1], drop.position[2]);
-            dummy.updateMatrix();
-            meshRef.current.setMatrixAt(i, dummy.matrix);
-        });
-        meshRef.current.instanceMatrix.needsUpdate = true;
+        if (rainGroupRef.current) {
+            rainGroupRef.current.children.forEach((drop) => {
+                drop.position.y -= 1; // Increase this value to make the raindrops fall faster
+                if (drop.position.y < -100) {
+                    drop.position.y = 100;
+                }
+            });
+        }
     });
 
+    useEffect(() => {
+        if (isThunderstorm) {
+            const interval = setInterval(() => {
+                console.log('Thunderstorm effect triggered');
+                if (scene.background) {
+                    scene.background.set(0xffffff);
+                } else {
+                    scene.background = new THREE.Color(0xffffff);
+                }
+                if (lightningRef.current) {
+                    lightningRef.current.intensity = 10;
+                }
+                setTimeout(() => {
+                    if (scene.background) {
+                        scene.background.set(0x333333);
+                    } else {
+                        scene.background = new THREE.Color(0x333333);
+                    }
+                    if (lightningRef.current) {
+                        lightningRef.current.intensity = 0;
+                    }
+                }, 100);
+            }, 5000);
+
+            return () => clearInterval(interval);
+        }
+    }, [isThunderstorm, scene]);
+
     return (
-        <instancedMesh ref={meshRef} args={[null, null, count]}>
-            <cylinderGeometry args={[0.02, 0.02, 1, 32]} />
-            <meshStandardMaterial color="while" />
-        </instancedMesh>
+        <>
+            <group ref={rainGroupRef}>
+                {raindrops}
+            </group>
+            <directionalLight ref={lightningRef} position={[0, 10, 0]} intensity={0} />
+        </>
     );
 };
 

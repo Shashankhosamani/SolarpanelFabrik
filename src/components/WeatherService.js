@@ -5,6 +5,7 @@ export const fetchWeatherData = async (latitude, longitude) => {
     const response = await fetch(url);
     const data = await response.json();
     console.log(data);
+    
 
     // Current local time
     const currentTime = new Date(data.current_weather.time);
@@ -25,6 +26,8 @@ export const fetchWeatherData = async (latitude, longitude) => {
         console.error('Current hour not found in hourly data');
         return;
     }
+    console.log(currentTime.toLocaleString(currentTime.getHours()));
+    console.log(data.hourly.weathercode[currentHourIndex]);
 
     return {
         ghi: data.hourly.direct_radiation[currentHourIndex], // Using direct radiation as an approximation for GHI

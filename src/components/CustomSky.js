@@ -1,90 +1,92 @@
-import React, { useRef, useMemo, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import React, { useMemo } from 'react';
+import { Sky } from '@react-three/drei';
+import { Vector3 } from 'three';
 
 const CustomSky = ({ time }) => {
-    const skyRef = useRef();
-    const sunRef = useRef();
-
-    const skyShaderMaterial = useMemo(() => {
-        return new THREE.ShaderMaterial({
-            uniforms: {
-                topColor: { value: new THREE.Color(0x0077ff) },
-                bottomColor: { value: new THREE.Color(0xffffff) },
-                offset: { value: 33 },
-                exponent: { value: 0.6 },
-                time: { value: 0 }
-            },
-            vertexShader: `
-                varying vec3 vWorldPosition;
-                void main() {
-                    vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-                    vWorldPosition = worldPosition.xyz;
-                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-                }
-            `,
-            fragmentShader: `
-                uniform vec3 topColor;
-                uniform vec3 bottomColor;
-                uniform float offset;
-                uniform float exponent;
-                uniform float time;
-                varying vec3 vWorldPosition;
-                void main() {
-                    float h = normalize(vWorldPosition + offset).y;
-                    float dayProgress = (sin(time * 3.14159 / 12.0 - 3.14159 / 2.0) + 1.0) / 2.0;
-                    vec3 dayTopColor = topColor;
-                    vec3 dayBottomColor = bottomColor;
-                    vec3 nightTopColor = vec3(0.0, 0.0, 0.05);
-                    vec3 nightBottomColor = vec3(0.0, 0.0, 0.1);
-                    vec3 currentTopColor = mix(nightTopColor, dayTopColor, dayProgress);
-                    vec3 currentBottomColor = mix(nightBottomColor, dayBottomColor, dayProgress);
-                    gl_FragColor = vec4(mix(currentBottomColor, currentTopColor, max(pow(max(h, 0.0), exponent), 0.0)), 1.0);
-                }
-            `,
-            side: THREE.BackSide
-        });
-    }, []);
-
-    useEffect(() => {
-        if (time) {
-            const date = new Date(time);
-            const hours = date.getHours();
-            const minutes = date.getMinutes();
-            const timeValue = hours + minutes / 60;
-            skyShaderMaterial.uniforms.time.value = timeValue;
+    const { sunPosition, isNight } = useMemo(() => {
+        if (!time) {
+            console.warn('CustomSky: time prop is undefined');
+            return { sunPosition: new Vector3(0, 1, 0), isNight: false }; // Default to noon
         }
-    }, [time, skyShaderMaterial]);
 
-    useFrame(() => {
-        if (sunRef.current) {
-            const timeValue = skyShaderMaterial.uniforms.time.value;
-            const angle = (timeValue / 24) * Math.PI * 2 - Math.PI / 2;
-            sunRef.current.position.set(
-                Math.cos(angle) * 1000,
-                Math.sin(angle) * 1000,
-                0
-            );
+        try {
+            const [datePart, timePart] = time.split(', ');
+            const [timePortion, period] = timePart.split(' ');
+            let [hours, minutes] = timePortion.split(':');
+            hours = parseInt(hours);
+            minutes = parseInt(minutes);
 
-            // Adjust sun intensity based on time
-            const intensity = Math.max(0, Math.sin((timeValue / 24) * Math.PI * 2));
-            sunRef.current.intensity = intensity;
+            if (period === 'PM' && hours !== 12) hours += 12;
+            if (period === 'AM' && hours === 12) hours = 0;
+
+            const isNight = hours >= 21 || hours < 5;
+
+            if (isNight) {
+                // Set sun position below the horizon at night
+                return { sunPosition: new Vector3(0, -1, 0), isNight };
+            }
+
+            // Calculate the sun's position based on the time
+            const theta = Math.PI * ((hours - 12 + minutes / 60) / 12);
+            const phi = Math.PI / 2;
+
+            const x = Math.cos(theta) * Math.sin(phi);
+            const y = Math.cos(phi);
+            const z = Math.sin(theta) * Math.sin(phi);
+
+            return { sunPosition: new Vector3(x, y, z), isNight };
+        } catch (error) {
+            console.error('Error parsing time in CustomSky:', error);
+            return { sunPosition: new Vector3(0, 1, 0), isNight: false }; // Default to noon
         }
-    });
+    }, [time]);
+
+    const skyProps = useMemo(() => {
+        if (!time) {
+            return { mieCoefficient: 0.005, mieDirectionalG: 0.8, rayleigh: 3, turbidity: 2 }; // Default to daytime
+        }
+
+        try {
+            const [datePart, timePart] = time.split(', ');
+            const [timePortion, period] = timePart.split(' ');
+            let [hours, minutes] = timePortion.split(':');
+            hours = parseInt(hours);
+
+            if (period === 'PM' && hours !== 12) hours += 12;
+            if (period === 'AM' && hours === 12) hours = 0;
+
+            // Adjust sky properties based on time of day
+            if (hours >= 5 && hours < 8) {
+                // Dawn
+                return { mieCoefficient: 0.005, mieDirectionalG: 0.8, rayleigh: 2, turbidity: 10 };
+            } else if (hours >= 8 && hours < 17) {
+                // Daytime
+                return { mieCoefficient: 0.005, mieDirectionalG: 0.8, rayleigh: 3, turbidity: 2 };
+            } else if (hours >= 17 && hours < 19) {
+                // Dusk
+                return { mieCoefficient: 0.005, mieDirectionalG: 0.8, rayleigh: 4, turbidity: 20 };
+            } else {
+                // Night
+                return { mieCoefficient: 1.000, mieDirectionalG: 0.000, rayleigh: 1, turbidity: 10 };
+            }
+        } catch (error) {
+            console.error('Error parsing time in CustomSky:', error);
+            return { mieCoefficient: 0.005, mieDirectionalG: 0.8, rayleigh: 3, turbidity: 2 }; // Default to daytime
+        }
+    }, [time]);
 
     return (
         <>
-            <mesh ref={skyRef}>
-                <sphereGeometry args={[1000, 32, 15]} />
-                <primitive object={skyShaderMaterial} attach="material" />
-            </mesh>
-            <directionalLight
-                ref={sunRef}
-                color={0xffffbb}
-                intensity={1}
-                position={[0, 1000, 0]}
+            <Sky
+                distance={450000}
+                sunPosition={sunPosition}
+                inclination={0}
+                azimuth={0.25}
+                {...skyProps}
             />
-            <ambientLight intensity={0.1} /> {/* Add subtle ambient light */}
+            {isNight && (
+                <color attach="background" args={['#000000']} /> // Black background for night
+            )}
         </>
     );
 };
