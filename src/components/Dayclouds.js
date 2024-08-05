@@ -5,7 +5,7 @@ const Dayclouds =()=> {
     const cloudPositions = [];
 
     const spacing = 20;
-    const range = 60;
+    const range = 100;
 
     for (let x = -range; x <= range; x += spacing) {
         for (let z = -range; z <= range; z += spacing) {
