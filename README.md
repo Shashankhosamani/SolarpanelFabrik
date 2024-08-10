@@ -22,7 +22,7 @@ Before running the application, ensure you have [Node.js](https://nodejs.org/) a
 
 1. Clone the repository:
    bash
-   git clone https://github.com/your-username/solarpanel-digital-twin.git
+   git clone https://github.com/Shashankhosamani/SolarpanelFabrik.git
    cd solarpanel-digital-twin
 2. Install the dependencies:
     npm install
