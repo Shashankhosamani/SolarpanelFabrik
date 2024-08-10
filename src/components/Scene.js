@@ -2,31 +2,36 @@ import React, { useState, Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import SolarPanelWrapper from './solarpanel';
-import WeatherToggleButton from './Button'; // Assuming Button.js is the component for the buttons
-import Rain from './rain';
-import VolumetricFog from './Fog';
-import Dayclouds from './Dayclouds';
+import WeatherToggleButton from './Button'; // Button component for toggling weather effects
+import Rain from './rain'; // Rain component
+import VolumetricFog from './Fog'; // Fog component
+import Dayclouds from './Overcast'; // Clouds component
 
 const Scene = () => {
+    // State to control visibility of weather effects
     const [showRain, setShowRain] = useState(false);
     const [showClouds, setShowClouds] = useState(false);
     const [showFog, setShowFog] = useState(false);
 
+    // Toggle rain visibility
     const toggleRain = () => {
         setShowRain(prev => !prev);
         console.log('Rain toggled:', !showRain);
     };
 
+    // Toggle clouds visibility
     const toggleClouds = () => {
         setShowClouds(prev => !prev);
         console.log('Clouds toggled:', !showClouds);
     };
 
+    // Toggle fog visibility
     const toggleFog = () => {
         setShowFog(prev => !prev);
         console.log('Fog toggled:', !showFog);
     };
 
+    // Log the active weather effects
     useEffect(() => {
         console.log('Active Weather Effects:');
         if (showRain) console.log('Rain is active');
@@ -44,12 +49,13 @@ const Scene = () => {
                 <WeatherToggleButton position={[-20, 10, -10]} onClick={toggleFog} label="Toggle Fog" />
                 <WeatherToggleButton position={[-20, 6, -10]} onClick={toggleRain} label="Toggle Rain" />
                 <WeatherToggleButton position={[-20, 2, -10]} onClick={toggleClouds} label="Toggle Clouds" />
-                
-                {/* Weather effects */}
+
+                {/* Weather effects based on state */}
                 {showRain && <Rain />}
                 {showClouds && <Dayclouds />}
                 {showFog && <VolumetricFog />}
 
+                {/* Solar panel wrapper */}
                 <SolarPanelWrapper />
             </Suspense>
             <OrbitControls />

@@ -3,11 +3,12 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const Snow = ({ isSnowstorm }) => {
-    const snowCount = 10000;
-    const snowGroupRef = useRef();
-    const flurryRef = useRef();
-    const { scene } = useThree();
+    const snowCount = 10000; // Number of snowflakes
+    const snowGroupRef = useRef(); // Reference to the group containing snowflakes
+    const flurryRef = useRef(); // Reference to the light used for snowstorm effect
+    const { scene } = useThree(); // Access to the scene
 
+    // Create an array of snowflakes
     const snowflakes = useMemo(() => {
         const flakes = [];
         for (let i = 0; i < snowCount; i++) {
@@ -24,10 +25,11 @@ const Snow = ({ isSnowstorm }) => {
         return flakes;
     }, [snowCount]);
 
+    // Animate snowflakes
     useFrame(() => {
         if (snowGroupRef.current) {
             snowGroupRef.current.children.forEach((flake) => {
-                flake.position.y -= 0.5; // Adjust speed for snowfall
+                flake.position.y -= 0.5; // Snowfall speed
                 flake.position.x += (Math.random() - 0.5) * 0.1; // Simulate wind
                 if (flake.position.y < -100) {
                     flake.position.y = 100; // Reset position when off-screen
@@ -37,6 +39,7 @@ const Snow = ({ isSnowstorm }) => {
         }
     });
 
+    // Handle snowstorm effects
     useEffect(() => {
         if (isSnowstorm) {
             const interval = setInterval(() => {
@@ -47,7 +50,7 @@ const Snow = ({ isSnowstorm }) => {
                     scene.background = new THREE.Color(0xffffff);
                 }
                 if (flurryRef.current) {
-                    flurryRef.current.intensity = 10;
+                    flurryRef.current.intensity = 10; // Increase light intensity for snowstorm
                 }
                 setTimeout(() => {
                     if (scene.background) {
@@ -56,16 +59,14 @@ const Snow = ({ isSnowstorm }) => {
                         scene.background = new THREE.Color(0x333333);
                     }
                     if (flurryRef.current) {
-                        flurryRef.current.intensity = 0;
+                        flurryRef.current.intensity = 0; // Reset light intensity
                     }
                 }, 100);
             }, 5000);
 
-            return () => clearInterval(interval);
+            return () => clearInterval(interval); // Cleanup interval on unmount
         }
     }, [isSnowstorm, scene]);
-
-
 
     return (
         <>

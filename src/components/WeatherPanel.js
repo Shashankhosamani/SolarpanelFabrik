@@ -1,20 +1,18 @@
 import React from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Canvas } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { BoxGeometry, MeshStandardMaterial, Mesh } from 'three';
 
+// Component to display weather information in a 3D panel
 const WeatherPanel = ({ position, weatherData }) => {
     const { ghi, temperature, rainAmount, localTime, timezone } = weatherData;
 
-   
-
-    const panelRef = React.useRef();
-
     return (
-        <mesh position={position} ref={panelRef}>
+        <mesh position={position}>
+            {/* 3D box geometry for the weather panel */}
             <boxGeometry args={[4, 2, 0.1]} />
+            {/* Material for the box, giving it a white color with some roughness and metalness */}
             <meshStandardMaterial color="white" roughness={0.8} metalness={0.2} />
+            {/* HTML overlay for displaying weather data */}
             <Html position={[0, 0, 0.1]} transform>
                 <div style={styles.panel}>
                     <h2 style={styles.title}>Current Weather</h2>
@@ -29,6 +27,7 @@ const WeatherPanel = ({ position, weatherData }) => {
     );
 };
 
+// Styles for the HTML overlay
 const styles = {
     panel: {
         width: '100%',

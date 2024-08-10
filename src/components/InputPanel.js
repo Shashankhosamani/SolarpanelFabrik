@@ -1,25 +1,25 @@
-// InputPanel.js
 import React, { useState, useEffect } from 'react';
 import { Html } from '@react-three/drei';
-import { PlaneGeometry, MeshStandardMaterial } from 'three';
 
 const InputPanel = ({ position, onSubmit }) => {
+    // State variables for input fields
     const [latitude, setLatitude] = useState('13');
     const [longitude, setLongitude] = useState('77');
     const [efficiency, setEfficiency] = useState('0.15');
     const [area, setArea] = useState('1.6');
     const [currentTime, setCurrentTime] = useState('');
 
+    // Set up a timer to update the current time every second
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentTime(new Date().toLocaleTimeString());
         }, 1000);
-        return () => clearInterval(timer);
+        return () => clearInterval(timer); // Clean up the timer on component unmount
     }, []);
 
-    // Convert pixel dimensions to Three.js units
-    const panelWidth = 4; // 400px / 100
-    const panelHeight = 3; // 300px / 100
+    // Convert pixel dimensions to Three.js units for the panel
+    const panelWidth = 4; // Panel width in Three.js units
+    const panelHeight = 3; // Panel height in Three.js units
 
     return (
         <group position={position}>
@@ -30,6 +30,7 @@ const InputPanel = ({ position, onSubmit }) => {
                 <Html transform position={[0, 0, 0.01]} rotation={[0, 0, 0]} scale={1}>
                     <div style={styles.container}>
                         <h2 style={styles.title}>Solar Panel Configuration</h2>
+                        {/* Latitude Input */}
                         <div style={styles.field}>
                             <label style={styles.label}>Latitude:</label>
                             <input
@@ -39,6 +40,7 @@ const InputPanel = ({ position, onSubmit }) => {
                                 style={styles.input}
                             />
                         </div>
+                        {/* Longitude Input */}
                         <div style={styles.field}>
                             <label style={styles.label}>Longitude:</label>
                             <input
@@ -48,6 +50,7 @@ const InputPanel = ({ position, onSubmit }) => {
                                 style={styles.input}
                             />
                         </div>
+                        {/* Efficiency Input */}
                         <div style={styles.field}>
                             <label style={styles.label}>Efficiency:</label>
                             <input
@@ -57,6 +60,7 @@ const InputPanel = ({ position, onSubmit }) => {
                                 style={styles.input}
                             />
                         </div>
+                        {/* Area Input */}
                         <div style={styles.field}>
                             <label style={styles.label}>Area (m²):</label>
                             <input
@@ -66,6 +70,7 @@ const InputPanel = ({ position, onSubmit }) => {
                                 style={styles.input}
                             />
                         </div>
+                        {/* Submit Button */}
                         <button
                             onClick={() => onSubmit({
                                 latitude: parseFloat(latitude),
@@ -77,6 +82,8 @@ const InputPanel = ({ position, onSubmit }) => {
                         >
                             Update
                         </button>
+                        {/* Display current time */}
+                        <div style={styles.time}>Current Time: {currentTime}</div>
                     </div>
                 </Html>
             </mesh>
@@ -84,6 +91,7 @@ const InputPanel = ({ position, onSubmit }) => {
     );
 };
 
+// Styling for the panel and its contents
 const styles = {
     container: {
         width: '100%',
