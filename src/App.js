@@ -1,6 +1,7 @@
 import React from 'react';
 import Scene from './components/Scene'; // Import the Scene component from the components folder
 import './css/App.css'; // Import the CSS file for styling
+import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
 
 const App = () => {
   return (
@@ -10,5 +11,6 @@ const App = () => {
     </div>
   );
 };
+
 
 export default App; // Export the App component for use in other parts of the application
