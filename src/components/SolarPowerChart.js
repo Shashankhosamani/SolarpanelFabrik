@@ -1,30 +1,42 @@
 // SolarPowerChart.js
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, LineElement, CategoryScale, LinearScale, Title } from 'chart.js';
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale } from 'chart.js';
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, Title);
+// Register chart components
+ChartJS.register(Title, Tooltip, Legend, LineElement, CategoryScale, LinearScale);
 
-const SolarPowerChart = ({ data }) => {
-    const chartData = {
-        labels: data.map(point => point.time), // X-axis labels (time)
+const SolarPowerChart = ({ hours, predictedValues }) => {
+    const data = {
+        labels: hours,
         datasets: [
             {
-                label: 'Solar Power (W-h)',
-                data: data.map(point => point.power), // Y-axis data (solar power)
+                label: 'Predicted Solar Power Generation (W-h)',
+                data: predictedValues,
+                fill: false,
                 borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderWidth: 1,
-                fill: true,
-            },
-        ],
+                tension: 0.1
+            }
+        ]
     };
 
-    return (
-        <div style={{ position: 'absolute', top: '10px', right: '10px', width: '300px', height: '300px' }}>
-            <Line data={chartData} />
-        </div>
-    );
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function (context) {
+                        return `${context.dataset.label}: ${context.raw.toFixed(2)} W-h`;
+                    }
+                }
+            }
+        }
+    };
+
+    return <Line data={data} options={options} />;
 };
 
 export default SolarPowerChart;

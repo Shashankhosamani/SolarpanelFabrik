@@ -6,7 +6,7 @@ const InputPanel = ({ position, onSubmit }) => {
     const [latitude, setLatitude] = useState('13');
     const [longitude, setLongitude] = useState('77');
     const [efficiency, setEfficiency] = useState('0.15');
-    const [area, setArea] = useState('1.6');
+    const [area, setArea] = useState('0.33');
     const [currentTime, setCurrentTime] = useState('');
 
     // Set up a timer to update the current time every second

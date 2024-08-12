@@ -22,7 +22,7 @@ const GroundPlane = ({ position }) => {
             rotation={[-Math.PI / 2, 0, 0]} // Rotate the plane to be horizontal
             ref={planeRef} // Reference to the mesh for texture application
         >
-            <planeGeometry args={[100, 100]} /> {/* Define the size of the plane */}
+            <planeGeometry args={[250,250]} /> {/* Define the size of the plane */}
             <meshStandardMaterial /> {/* Apply a standard material to the plane */}
         </mesh>
     );

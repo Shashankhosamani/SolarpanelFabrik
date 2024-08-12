@@ -6,6 +6,7 @@ import Environment from './Environment';
 import CustomSky from './CustomSky';
 import InputPanel from './InputPanel'; // Import InputPanel
 import GroundPlane from './GroundPlane'; // Import GroundPlane
+import SolarPowerChartContainer from './SolarPowerChartContainer'; // Import SolarPowerChartContainer
 
 // SolarPanel component responsible for rendering each solar panel and handling click events
 const SolarPanel = ({ position, id, onClick, energy }) => {
@@ -43,13 +44,14 @@ const SolarPanelWrapper = () => {
         latitude: 13,
         longitude: 77,
         efficiency: 0.15,
-        area: 1.6
+        area: 0.33
     });
 
     // Fetch weather data and calculate energy based on panel configuration
     useEffect(() => {
         const fetchData = async () => {
             try {
+                console.log('Fetching weather data with config:', panelConfig);
                 const data = await fetchWeatherData(panelConfig.latitude, panelConfig.longitude);
                 setWeatherData(data); // Update weather data state
                 const energy = calculateEnergy(data.ghi, panelConfig.efficiency, panelConfig.area);
@@ -96,6 +98,7 @@ const SolarPanelWrapper = () => {
 
     // Handle updates to the panel configuration (latitude, longitude, efficiency, area)
     const handleConfigUpdate = (newConfig) => {
+        console.log('Updating panel configuration:', newConfig);
         setPanelConfig(newConfig);
     };
 
@@ -157,9 +160,9 @@ const SolarPanelWrapper = () => {
 
             <Environment weatherCode={weatherCode} /> {/* Render the environment based on the weather code */}
 
-            {weatherData && (<WeatherPanel position={[-12, 5, -10]} weatherData={weatherData} /> )} {/* Display weather data in a panel */}
+            {weatherData && (<WeatherPanel position={[-12, 5, -10]} weatherData={weatherData} />)} {/* Display weather data in a panel */}
 
-            {weatherData && weatherData.localTime && (<CustomSky time={weatherData.localTime} /> )}{/* Render the sky based on the local time */}
+            {weatherData && weatherData.localTime && (<CustomSky time={weatherData.localTime} />)}{/* Render the sky based on the local time */}
 
             {selectedPanel && (
                 <Html>
@@ -174,6 +177,8 @@ const SolarPanelWrapper = () => {
                     </div>
                 </Html>
             )}
+
+
         </Suspense>
     );
 };

@@ -33,7 +33,12 @@ const Environment = ({ weatherCode }) => {
             );
         } else if ([95, 96, 99].includes(weatherCode)) {
             // Thunderstorms
-            return <Rain isThunderstorm={true} />;
+            return (
+                <>
+                    <Rain isThunderstorm={true} /> {/*thundestrom rain */}
+                    <Overcast /> {/* Overcast clouds */}
+                </>
+            );
         } else if ([71, 73, 75, 77, 85, 86].includes(weatherCode)) {
             // Snowy conditions
             return <Snow />;
