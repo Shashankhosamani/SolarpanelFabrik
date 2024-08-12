@@ -166,7 +166,7 @@ const SolarPanelWrapper = () => {
                     <div style={styles.panel}>
                         <h2 style={styles.title}>Panel Details</h2>
                         <p style={styles.text}>Selected Panel ID: <strong>{selectedPanel}</strong></p>
-                        <p style={styles.text}>Energy Generated: <strong>{selectedPanelEnergy !== null ? selectedPanelEnergy.toFixed(2) : 'N/A'} W</strong></p>
+                        <p style={styles.text}>Energy Generated: <strong>{selectedPanelEnergy !== null ? selectedPanelEnergy.toFixed(2) : 'N/A'} W-h</strong></p>
                         <button style={styles.button} onClick={() => {
                             setSelectedPanel(null); // Deselect the panel on close button click
                             setSelectedPanelEnergy(null); // Clear the selected panel's energy

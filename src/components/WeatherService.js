@@ -47,7 +47,21 @@ export const fetchWeatherData = async (latitude, longitude) => {
     };
 };
 
-// Calculate the energy based on GHI, efficiency, and area
-export const calculateEnergy = (ghi, efficiency, area) => {
-    return ghi * efficiency * area;
+// Adjust efficiency based on temperature
+const adjustEfficiencyForTemperature = (baseEfficiency, temperature) => {
+    const temperatureCoefficient = 0.005; // 0.5% efficiency loss per degree above 25°C
+    const referenceTemperature = 25; // Reference temperature in °C
+
+    if (temperature > referenceTemperature) {
+        const efficiencyLoss = (temperature - referenceTemperature) * temperatureCoefficient;
+        return baseEfficiency * (1 - efficiencyLoss);
+    }
+
+    return baseEfficiency;
+};
+
+// Calculate the energy based on GHI, adjusted efficiency, and area
+export const calculateEnergy = (ghi, baseEfficiency, area, temperature) => {
+    const adjustedEfficiency = adjustEfficiencyForTemperature(baseEfficiency, temperature);
+    return ghi * adjustedEfficiency * area * 0.25; // 0.25 represents the 15-minute interval
 };

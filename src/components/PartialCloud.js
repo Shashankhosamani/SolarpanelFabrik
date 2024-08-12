@@ -7,7 +7,7 @@ const PartialCloud = () => {
 
     // Constants for cloud positioning
     const spacing = 40; // Spacing between clouds
-    const range = 40;   // Range to cover in the x and z directions
+    const range = 70;   // Range to cover in the x and z directions
     const randomness = 90; // Amount of random deviation in cloud positions
     const yPosition = 50;  // Constant y position for all clouds
 
@@ -32,7 +32,7 @@ const PartialCloud = () => {
                     speed={0.2}        // Speed at which the cloud moves
                     opacity={1}        // Opacity of the cloud
                     scale={4}          // Scale of the cloud
-                    color="#D3D3D3"    // Color of the cloud
+                    color="#FFFFFF"    // Color of the cloud
                 />
             ))}
         </>

@@ -62,7 +62,7 @@ const CustomSky = ({ time, weathercode }) => {
                 return { mieCoefficient: 0.005, mieDirectionalG: 0.8, rayleigh: 2, turbidity: 1 };
             } else if (hours >= 8 && hours < 17) {
                 // Daytime (late morning to afternoon)
-                return { mieCoefficient: 0.005, mieDirectionalG: 0.8, rayleigh: 3, turbidity: 2 };
+                return { mieCoefficient: 0.005, mieDirectionalG: 8.8, rayleigh: 1, turbidity: 30 };
             } else if (hours >= 17 && hours < 19) {
                 // Dusk (early evening)
                 return { mieCoefficient: 0.005, mieDirectionalG: 0.8, rayleigh: 2, turbidity: 10 };
