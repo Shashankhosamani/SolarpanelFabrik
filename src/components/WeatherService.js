@@ -62,6 +62,7 @@ const adjustEfficiencyForTemperature = (baseEfficiency, temperature) => {
 
 // Calculate the energy based on GHI, adjusted efficiency, and area
 export const calculateEnergy = (ghi, baseEfficiency, area, temperature) => {
+    const correctedGHI = ghi < 0 ? 0 : ghi;
     const adjustedEfficiency = adjustEfficiencyForTemperature(baseEfficiency, temperature);
-    return ghi * adjustedEfficiency * area * 0.25; // 0.25 represents the 15-minute interval
+    return correctedGHI * adjustedEfficiency * area * 0.25; // 0.25 represents the 15-minute interval
 };

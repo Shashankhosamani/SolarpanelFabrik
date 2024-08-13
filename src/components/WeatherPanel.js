@@ -4,7 +4,10 @@ import { BoxGeometry, MeshStandardMaterial, Mesh } from 'three';
 
 // Component to display weather information in a 3D panel
 const WeatherPanel = ({ position, weatherData }) => {
-    const { ghi, temperature, rainAmount, localTime, timezone } = weatherData;
+    let { ghi, temperature, rainAmount, localTime, timezone } = weatherData;
+
+    // Ensure GHI is not less than zero
+    ghi = ghi < 0 ? 0 : ghi;
 
     return (
         <mesh position={position}>
