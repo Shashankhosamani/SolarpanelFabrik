@@ -1,13 +1,8 @@
-// src/components/Scene.js
 import React, { useState, useRef, useEffect, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { PointerLockControls } from '@react-three/drei';
-import SolarPanelWrapper from './solarpanel';
-import WeatherToggleButton from './Button';
-import Rain from './rain';
-import VolumetricFog from './Fog';
-import Dayclouds from './Overcast';
-
+import SolarPanelWrapper from './solarpanel'; // Ensure this matches the correct file name
+import './Scene.css'; // Import the CSS file for the crosshair
 
 const MovementHandler = ({ controlsRef, isPointerLocked }) => {
     const moveDirection = useRef({ forward: false, backward: false, left: false, right: false });
@@ -84,12 +79,8 @@ const MovementHandler = ({ controlsRef, isPointerLocked }) => {
 };
 
 const Scene = () => {
-    const [showRain, setShowRain] = useState(false);
-    const [showClouds, setShowClouds] = useState(false);
-    const [showFog, setShowFog] = useState(false);
     const [isPointerLocked, setIsPointerLocked] = useState(false);
     const controlsRef = useRef();
-
 
     useEffect(() => {
         const handlePointerLockChange = () => {
@@ -118,57 +109,25 @@ const Scene = () => {
         }
     };
 
-    // Toggle rain visibility
-    const toggleRain = () => {
-        setShowRain(prev => !prev);
-        console.log('Rain toggled:', !showRain);
-    };
-
-    // Toggle clouds visibility
-    const toggleClouds = () => {
-        setShowClouds(prev => !prev);
-        console.log('Clouds toggled:', !showClouds);
-    };
-
-    // Toggle fog visibility
-    const toggleFog = () => {
-        setShowFog(prev => !prev);
-        console.log('Fog toggled:', !showFog);
-    };
-
-    // Log the active weather effects
-    useEffect(() => {
-        console.log('Active Weather Effects:');
-        if (showRain) console.log('Rain is active');
-        if (showClouds) console.log('Clouds are active');
-        if (showFog) console.log('Fog is active');
-        if (!showRain && !showClouds && !showFog) console.log('No weather effects are active');
-    }, [showRain, showClouds, showFog]);
-
     return (
-        <Canvas
-            camera={{ position: [5, 5, 5], fov: 40 }}
-            shadows
-            onClick={requestPointerLock}
-        >
-            <ambientLight intensity={0.5} />
-            <pointLight position={[100, 100, 100]} />
-            <Suspense fallback={null}>
-                {/* Buttons for controlling weather effects */}
-                <WeatherToggleButton position={[-20, 10, -10]} onClick={toggleFog} label="Toggle Fog" />
-                <WeatherToggleButton position={[-20, 6, -10]} onClick={toggleRain} label="Toggle Rain" />
-                <WeatherToggleButton position={[-20, 2, -10]} onClick={toggleClouds} label="Toggle Clouds" />
-
-                {showRain && <Rain />}
-                {showClouds && <Dayclouds />}
-                {showFog && <VolumetricFog />}
-
-                <SolarPanelWrapper />
-              
-            </Suspense>
-            <PointerLockControls ref={controlsRef} />
-            <MovementHandler controlsRef={controlsRef} isPointerLocked={isPointerLocked} />
-        </Canvas>
+        <>
+            <Canvas
+                camera={{ position: [5, 5, 5], fov: 40 }}
+                shadows
+                onClick={requestPointerLock}
+            >
+                <ambientLight intensity={0.5} />
+                <pointLight position={[100, 100, 100]} />
+                <Suspense fallback={null}>
+                    {/* Render weather effects directly if needed */}
+                   
+                    <SolarPanelWrapper />
+                </Suspense>
+                <PointerLockControls ref={controlsRef} />
+                <MovementHandler controlsRef={controlsRef} isPointerLocked={isPointerLocked} />
+            </Canvas>
+            <div className="crosshair"></div> {/* Crosshair added */}
+        </>
     );
 };
 
