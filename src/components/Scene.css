@@ -1,0 +1,12 @@
+/* src/components/Scene.css */
+.crosshair {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background-color: red;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    pointer-events: none; /* Ensures it doesn't interfere with mouse events */
+}
