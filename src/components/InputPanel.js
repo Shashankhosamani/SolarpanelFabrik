@@ -97,10 +97,32 @@ const InputPanel = ({ position, onSubmit }) => {
                                     style={styles.input}
                                 />
                             </div>
+                            <div style={styles.field}>
+                                <label style={styles.label}>Efficiency:</label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="1"
+                                    value={efficiency}
+                                    onChange={(e) => setEfficiency(e.target.value)}
+                                    style={styles.input}
+                                />
+                            </div>
+                            <div style={styles.field}>
+                                <label style={styles.label}>Area:</label>
+                                <input
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    value={area}
+                                    onChange={(e) => setArea(e.target.value)}
+                                    style={styles.input}
+                                />
+                            </div>
                             <button onClick={() => setShowMap(true)} style={styles.button}>
                                 Select from Map
                             </button>
-                            {/* ... rest of your inputs ... */}
                             <button
                                 onClick={() => onSubmit({
                                     latitude: parseFloat(latitude),
@@ -158,7 +180,7 @@ const mapStyles = {
     }
 };
 
-// Original styles remain unchanged
+// Styles for the panel
 const styles = {
     container: {
         width: '100%',
@@ -198,8 +220,7 @@ const styles = {
         cursor: 'pointer',
         fontSize: '16px',
         marginBottom: '15px',
-        marginRight:'2px'
-        
+        marginRight: '2px'
     },
     time: {
         marginTop: '15px',
