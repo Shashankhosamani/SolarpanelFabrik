@@ -1,7 +1,7 @@
 import React from 'react';
 import { Cloud } from '@react-three/drei';
 
-const PartialCloud = () => {
+const Overlay = () => {
     // Array to store the positions of the clouds
     const cloudPositions = [];
 
@@ -39,4 +39,4 @@ const PartialCloud = () => {
     );
 };
 
-export default PartialCloud;
+export default Overlay;

@@ -21,13 +21,13 @@ Before running the application, ensure you have [Node.js](https://nodejs.org/) a
 ### Installation
 
 1. Clone the repository:
-   bash
+    Commands in the teminal:
    git clone https://github.com/Shashankhosamani/SolarpanelFabrik.git
-   cd solarpanel-digital-twin
-2. Install the dependencies:
-    npm install
-Available Scripts
-In the project directory, you can run:
+   cd SolarpanelFabrik
+
+2. Inside  SolarpanelFabrik folder:
+### `npm install`
+   Install the dependencies
 
 ### `npm start`
 Runs the app in development mode.
@@ -101,11 +101,11 @@ You don't have to ever use eject. The curated feature set is suitable for small 
 
 ### 8. `InputPanel.js`
 
-- **Purpose**: UI panel for configuring solar panel parameters.
-- **Dependencies**: `Html`, `PlaneGeometry`, `MeshStandardMaterial`
+- **Purpose**: UI panel for configuring solar panel parameters Also has World-map implementaion from which we can choose the locations latitude and longitude.
+- **Dependencies**: `Html`, `PlaneGeometry`, `MeshStandardMaterial`,`openlayers/ol`
 
 
-### 9. `LinearFog.js`
+### 9. `Fog.js`
 
 - **Purpose**: Adds linear fog to the scene.
 - **Dependencies**: `THREE`, `useThree`
@@ -120,6 +120,23 @@ You don't have to ever use eject. The curated feature set is suitable for small 
 
 - **purpose**: Adds Solar-Panel Grid to the Scene.
 - **Dependencies**: `@react-three/fiber`, `three`,'`react`,`@react-three/drei`,`./WeatherPanel`,`./WeatherService`,`./Environment`,`./InputPanel`,`./GroundPlane`,`./CustomSky`
+
+### 12. `Overlay.js`
+- **Purpose**: Renders clouds according to weather-code from API.
+- **Dependencies**: `react-three/drei`, `react`
+
+### 13.`PartialCloud`
+- **Purpose**: Renders clouds according to weather-code from API.
+- **Dependencies**: `react-three/drei`, `react`
+
+### 14.`Overcast`
+- **Purpose**: Renders clouds according to weather-code from API.
+- **Dependencies**: `react-three/drei`, `react`
+
+### 15. `WeatherService`
+- **Purpose**: Featches Data from API are returns to required functions.
+- **Dependencies**: `API URL`
+
 
 
 ### `API Integration`
@@ -139,6 +156,12 @@ export const fetchWeatherData = async (latitude, longitude) => {
 Organisation Contributor, Fabrik.Space (https://www.linkedin.com/company/fabrikspace/)
 
 Contributions are welcome! Please open an issue or submit a pull request if you have suggestions or improvements.
+
+### `individual contibutions from the Team`
+shashank hk: 3d-modeling and Input-form and Display.
+shashank.L.Hosamani: Api-Integration and power calculations and world-map.
+Sohan Davik Reddy: Environment Rendering and Player Movement.
+
 
 
 ### `License`

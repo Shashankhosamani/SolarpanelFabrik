@@ -6,7 +6,7 @@ import Environment from './Environment';
 import CustomSky from './CustomSky';
 import InputPanel from './InputPanel'; // Import InputPanel
 import GroundPlane from './GroundPlane'; // Import GroundPlane
-import SolarPowerChartContainer from './SolarPowerChartContainer'; // Import SolarPowerChartContainer
+ 
 
 const SolarPanel = ({ position, id, onClick, energy }) => {
     const { scene } = useGLTF('/panel.glb');
