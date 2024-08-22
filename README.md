@@ -18,7 +18,7 @@ Before running the application, ensure you have [Node.js](https://nodejs.org/) a
 - **Real-Time Weather Data**: Fetch and display current weather conditions.
 - **Interactive Controls**: Use buttons to toggle weather effects and configure solar panel parameters.
 
-### Installation
+## Installation
 
 1. Clone the repository:
     ```bash
@@ -140,7 +140,7 @@ You don't have to ever use eject. The curated feature set is suitable for small 
 
 
 
-### `API Integration`
+## `API Integration`
 The project uses the Open Meteo API to fetch real-time weather data. Ensure you have a stable internet connection for fetching weather information.
 
 const API_BASE_URL = 'https://api.open-meteo.com/v1/forecast';
@@ -152,21 +152,21 @@ export const fetchWeatherData = async (latitude, longitude) => {
     console.log(data);
 }
 
-### `Contributing`
+## `Contributing`
 
 Organisation Contributor, Fabrik.Space (https://www.linkedin.com/company/fabrikspace/)
 
 Contributions are welcome! Please open an issue or submit a pull request if you have suggestions or improvements.
 
-### `Individual Contributions from the Team`
+## `Individual Contributions from the Team`
 - **Shashank HK**: 3D modeling and input form and display.
 - **Shashank.L.Hosamani**: API integration, power calculations, and world map.
 - **Sohan Davik Reddy**: Environment rendering and player movement.
 
-### `License`
+## `License`
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-### `Learn More`
+## `Learn More`
 To learn more about Create React App and React, check out the following resources:
 
 Create React App documentation [https://create-react-app.dev/docs/getting-started/] 
