@@ -24,8 +24,9 @@ Before running the application, ensure you have [Node.js](https://nodejs.org/) a
     ```bash
    git clone https://github.com/Shashankhosamani/SolarpanelFabrik.git
    cd SolarpanelFabrik
-   
-2. Inside  SolarpanelFabrik folder:
+
+2. Inside SolarpanelFabrik folder Open terminal and execute the commands:
+
 ### `npm install`
    Install the dependencies
 
