@@ -158,12 +158,10 @@ Organisation Contributor, Fabrik.Space (https://www.linkedin.com/company/fabriks
 
 Contributions are welcome! Please open an issue or submit a pull request if you have suggestions or improvements.
 
-### `individual contibutions from the Team`
-shashank hk: 3d-modeling and Input-form and Display.
-shashank.L.Hosamani: Api-Integration and power calculations and world-map.
-Sohan Davik Reddy: Environment Rendering and Player Movement.
-
-
+### `Individual Contributions from the Team`
+- **Shashank HK**: 3D modeling and input form and display.
+- **Shashank.L.Hosamani**: API integration, power calculations, and world map.
+- **Sohan Davik Reddy**: Environment rendering and player movement.
 
 ### `License`
 This project is licensed under the MIT License - see the LICENSE file for details.
